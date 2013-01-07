@@ -21,6 +21,24 @@ task :diff, :repo_file do |t,args|
     next
   end
 
-  puts `diff #{file} #{file}`
+  puts `diff #{file} #{sourced}`
 end
 
+
+# DIFF OPTIONS
+
+# diff -q
+# diff --brief Report only whether the files differ, not the details of the differences
+
+# diff -C line
+# diff --context=[lines] Use the context output format, showing lines of context
+
+# diff --ignore-blank-lines
+
+# diff -r
+# diff --recursive Recursively compare
+
+# diff --side-by-side
+# diff -y
+
+# diff --suppress-common-lines Do not print common lines in side by side format
