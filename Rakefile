@@ -6,6 +6,8 @@ IGNORE_FILES = ['.','..',
                 'DS_Store','.git',
                 'irb-history','irb_history','.rbenv-version']
 
+# TODO: Default to diff if colordiff isn't available
+
 namespace :diff do
   desc "diff all files in repo"
   task :all do
@@ -48,7 +50,7 @@ namespace :diff do
       next
     end
 
-    puts `diff --context=5 #{file} #{sourced}`
+    puts `colordiff --context=5 #{file} #{sourced}`
   end
 end
 
