@@ -1,27 +1,55 @@
-task :default => [:test]
+task :default => ["diff:all"]
 
-desc "test"
-task :test do
-end
+HEADING_BREAK = "**********************************"
 
-desc "diff a repo file"
-task :diff, :repo_file do |t,args|
+IGNORE_FILES = ['.','..',
+                'DS_Store','.git',
+                'irb-history','irb_history','.rbenv-version']
 
-  file = "./#{args.repo_file}"
-  home = `cd; pwd`.strip
-  sourced = "#{home}/#{args.repo_file}"
+namespace :diff do
+  desc "diff all files in repo"
+  task :all do
+    repo = Dir.glob('.?*')
+    repo = repo - IGNORE_FILES
+
+    home_dir = Dir.open Dir.home
+    home = home_dir.entries.select {|v| v =~ /^\..*/ }
+    home_dir.close
+    home - IGNORE_FILES
+   
+    puts HEADING_BREAK 
+    puts "Only in home:", home - repo
+    
+    puts "",HEADING_BREAK 
+    puts "Only in repo:", repo - home 
+
+    puts "",HEADING_BREAK 
+    puts "Comparing files:"
+    files = home & repo
   
-  if not File.exist? file
-    puts "#{file} doesn't exist"
-    next
+    for file in files do
+      puts `diff -q #{file} #{Dir.home}/#{file}`
+    end
   end
 
-  if not File.exist? sourced
-    puts "#{sourced} doesn't exist"
-    next
-  end
+  desc "diff a repo file"
+  task :file, :repo_file do |t,args|
 
-  puts `diff #{file} #{sourced}`
+    file = "./#{args.repo_file}"
+    sourced = "#{Dir.home}/#{args.repo_file}"
+  
+    if not File.exist? file
+      puts "#{file} doesn't exist"
+      next
+    end
+
+    if not File.exist? sourced
+      puts "#{sourced} doesn't exist"
+      next
+    end
+
+    puts `diff --context=5 #{file} #{sourced}`
+  end
 end
 
 
