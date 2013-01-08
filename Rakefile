@@ -30,7 +30,7 @@ namespace :diff do
     files = home & repo
   
     for file in files do
-      puts `diff -q #{file} #{Dir.home}/#{file}`
+      puts `diff --recursive --brief #{file} #{Dir.home}/#{file}`
     end
   end
 
