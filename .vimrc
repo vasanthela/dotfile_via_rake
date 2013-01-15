@@ -21,7 +21,7 @@ set t_Co=256          " enable 256 colors in vim
 
 syntax on             " syntax highlight
 
-colorscheme wombat256mod
+colorscheme Tomorrow-Night
 
 " Igor configuration
 """"""""""""""""""""
